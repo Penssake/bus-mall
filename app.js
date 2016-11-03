@@ -1,7 +1,8 @@
 var IMAGE_PATH = 'images/';
-var MAX_CLICKS = 3;
+var MAX_CLICKS = 25;
 var numClicks = 0;
 var stats = [];
+var productChart = null;
 
 var images = [
   'bag.jpg',
@@ -26,6 +27,20 @@ var images = [
   'wine-glass.jpg'
 ];
 
+function createChart() {
+  var chartElement = document.getElementById('product-chart');
+  var myChart = new Chart(chartElement, {
+    type: 'bar',
+    data: {
+      labels: images,
+      datasets: [{
+        label: 'Number Of Products Clicked',
+        data: stats,
+      }]
+    },
+  });
+}
+
 function resetStats() {
   for(var i = 0; i < images.length; i++) {
     stats.push(0);
@@ -37,8 +52,9 @@ function handleImageClick(columnIndex, imageIndex) {
   //when image is clicked on store info in stats array
   stats[imageIndex]++;
   //call random image selector
-  if(numClicks === MAX_CLICKS) {
+  if(numClicks === MAX_CLICKS - 1) {
     clearPictureSection();
+    createChart();
   }else {
     getNextImages();
     numClicks++;
