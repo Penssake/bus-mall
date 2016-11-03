@@ -1,7 +1,15 @@
 var IMAGE_PATH = 'images/';
-var MAX_CLICKS = 25;
+var MAX_CLICKS = 4;
 var numClicks = 0;
 var stats = [];
+if (localStorage['stats']) {
+  var oldStats = localStorage.getItem('stats');
+  var stringifiedStats = JSON.parse(oldStats);
+  stats = stringifiedStats;
+  // parse it from a string to a real array
+  // set stats equal to the real array instead
+}
+
 var productChart = null;
 
 var images = [
@@ -41,10 +49,15 @@ function createChart() {
   });
 }
 
-function resetStats() {
-  for(var i = 0; i < images.length; i++) {
-    stats.push(0);
-  }
+// function resetStats() {
+//   for(var i = 0; i < images.length; i++) {
+//     stats.push(0);
+//   }
+// }
+
+function modifyLocalStorage(){
+  var stringifiedStats = JSON.stringify(stats);
+  localStorage.setItem('stats', stringifiedStats);
 }
 
 function handleImageClick(columnIndex, imageIndex) {
@@ -52,12 +65,13 @@ function handleImageClick(columnIndex, imageIndex) {
   //when image is clicked on store info in stats array
   stats[imageIndex]++;
   //call random image selector
-  if(numClicks === MAX_CLICKS - 1) {
+  if (numClicks === MAX_CLICKS - 1) {
     clearPictureSection();
     createChart();
-  }else {
+  } else {
     getNextImages();
     numClicks++;
+    modifyLocalStorage();
   }
   console.log('Stats', stats);
 }
@@ -105,6 +119,6 @@ function getNextImages(){
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  resetStats();
+  // resetStats();
   getNextImages();
 });
