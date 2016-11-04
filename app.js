@@ -1,13 +1,17 @@
 var IMAGE_PATH = 'images/';
-var MAX_CLICKS = 4;
+var MAX_CLICKS = 25;
 var numClicks = 0;
+var imagesTracked = [];
+// if (localStorage['imagesTracked']) {
+//   var picturesShown = localStorage.getItem('imagesTracked');
+//   var stringifiedStats = JSON.parse(picturesShown);
+//   stats = stringifiedStats;
+// }
 var stats = [];
 if (localStorage['stats']) {
   var oldStats = localStorage.getItem('stats');
   var stringifiedStats = JSON.parse(oldStats);
   stats = stringifiedStats;
-  // parse it from a string to a real array
-  // set stats equal to the real array instead
 }
 
 var productChart = null;
@@ -42,18 +46,14 @@ function createChart() {
     data: {
       labels: images,
       datasets: [{
-        label: 'Number Of Products Clicked',
+        label: 'Click Tracker',
         data: stats,
+        backgroundColor: 'white',
+        borderWidth: 10,
       }]
     },
   });
 }
-
-// function resetStats() {
-//   for(var i = 0; i < images.length; i++) {
-//     stats.push(0);
-//   }
-// }
 
 function modifyLocalStorage(){
   var stringifiedStats = JSON.stringify(stats);
@@ -61,10 +61,7 @@ function modifyLocalStorage(){
 }
 
 function handleImageClick(columnIndex, imageIndex) {
-  console.log(columnIndex, imageIndex);
-  //when image is clicked on store info in stats array
   stats[imageIndex]++;
-  //call random image selector
   if (numClicks === MAX_CLICKS - 1) {
     clearPictureSection();
     createChart();
@@ -73,7 +70,6 @@ function handleImageClick(columnIndex, imageIndex) {
     numClicks++;
     modifyLocalStorage();
   }
-  console.log('Stats', stats);
 }
 
 function clearPictureSection() {
@@ -87,7 +83,6 @@ function attachImageToDOM(url, columnIndex, imageIndex) {
   img.setAttribute('column-index', columnIndex);
   img.setAttribute('image-index', imageIndex);
   img.setAttribute('onclick', 'handleImageClick(' + columnIndex + ',' + imageIndex + ')');
-  img.style = 'display: inline-block; height: 150px; width: 150px; margin: 5px;';
 
   console.log('CREATING IMAGE', url);
   document.getElementById('picture-container').appendChild(img);
@@ -99,13 +94,11 @@ function getNextImages(){
   var trackedImages = [];
   for (var i = 0; i < 3; i++) {
     var randomIndex = Math.floor(Math.random() * images.length);
-    //if I already have this index in my tracked images then get new index
     if(trackedImages.indexOf(randomIndex) > -1) {
-    //if we do not have the index in tracked images than keep going
       while(trackedImages.indexOf(randomIndex) !== -1) {
         if(randomIndex === images.length) {
-          randomIndex = 0;
-        }else {
+          randomIndex = Math.floor(Math.random() * images.length);
+        } else {
           randomIndex++;
         }
       }
@@ -119,6 +112,5 @@ function getNextImages(){
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  // resetStats();
   getNextImages();
 });

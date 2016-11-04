@@ -1,0 +1,56 @@
+body {
+  background-color: #CAD0E5;
+}
+
+#picture-container img {
+  display: inline-block;
+  height: 300px;
+  width: 300px;
+  margin: 10px;
+  border-style: inset;
+  border-width: thick;
+}
+
+#picture-container {
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h1 {
+  text-align: left;
+  color: white;
+  font-family: sans-serif;
+  background-color: #5473D1;
+  opacity: 0.9;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h3 {
+  text-align: center;
+  color: white;
+  font-family: sans-serif;
+  background-color: #5473D1;
+  opacity: 0.9;
+  padding: 10px;
+  border-radius: 10px;
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#product-chart {
+  width: 500px;
+  height: 500px;
+}
+
+.grow:hover img
+{
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+}
